@@ -6,9 +6,20 @@ if [ -d "/usr/lib/jvm/java-17-openjdk-amd64" ]; then
 elif [ -d "/usr/lib/jvm/default-java" ]; then
     export JAVA_HOME="/usr/lib/jvm/default-java"
 else
-    # Get JAVA_HOME from java executable path
-    JAVA_PATH=$(readlink -f $(which java))
-    export JAVA_HOME=$(dirname $(dirname $JAVA_PATH))
+    # Get JAVA_HOME from java executable path - handle cases where readlink behaves differently
+    if command -v java >/dev/null 2>&1; then
+        JAVA_PATH=$(command -v java)
+        if [ -L "$JAVA_PATH" ]; then
+            # It's a symbolic link
+            RESOLVED_PATH=$(readlink -f "$JAVA_PATH" 2>/dev/null || readlink "$JAVA_PATH" 2>/dev/null || echo "$JAVA_PATH")
+        else
+            # It's not a symbolic link
+            RESOLVED_PATH="$JAVA_PATH"
+        fi
+        if [ -n "$RESOLVED_PATH" ]; then
+            export JAVA_HOME=$(dirname "$(dirname "$RESOLVED_PATH")")
+        fi
+    fi
 fi
 
 # Set Android SDK
