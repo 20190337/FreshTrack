@@ -1,6 +1,7 @@
 package com.freshtrack.ui.screens
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -10,7 +11,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -29,24 +31,36 @@ import java.util.concurrent.Executors
 @Composable
 fun ScanScreen(navController: NavController) {
     val context = LocalContext.current
+    val activity = context as Activity
+    
     var hasCameraPermission by remember {
         mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == 
+            PackageManager.PERMISSION_GRANTED
         )
     }
     var scannedBarcode by remember { mutableStateOf<String?>(null) }
+    var shouldRequestPermission by remember { mutableStateOf(false) }
 
+    // Permission launcher
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted -> hasCameraPermission = granted }
-    )
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasCameraPermission = isGranted
+        shouldRequestPermission = false
+    }
 
+    // Handle permission request
+    LaunchedEffect(shouldRequestPermission) {
+        if (shouldRequestPermission && !hasCameraPermission) {
+            permissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    // Auto request on first enter
     LaunchedEffect(Unit) {
         if (!hasCameraPermission) {
-            permissionLauncher.launch(Manifest.permission.CAMERA)
+            shouldRequestPermission = true
         }
     }
 
@@ -64,7 +78,7 @@ fun ScanScreen(navController: NavController) {
                 title = { Text("Scan Product") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -112,7 +126,9 @@ fun ScanScreen(navController: NavController) {
                     Text("Camera permission required")
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { permissionLauncher.launch(Manifest.permission.CAMERA) }
+                        onClick = { 
+                            shouldRequestPermission = true
+                        }
                     ) {
                         Text("Grant Permission")
                     }

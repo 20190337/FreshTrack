@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.freshtrack.app-mergeDebugResources-76:/values-uk/values-uk.xml",
+            "outputFile": "com.freshtrack.app-mergeDebugResources-77:/values-uk/values-uk.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/transforms-3/c65c188359e860663525f32513dcd15c/transformed/core-1.12.0/res/values-uk/values-uk.xml",

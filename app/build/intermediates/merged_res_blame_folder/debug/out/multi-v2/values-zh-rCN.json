@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.freshtrack.app-mergeDebugResources-76:/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "com.freshtrack.app-mergeDebugResources-77:/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/transforms-3/3bd7d3cfd14788859c3e424cd54841e3/transformed/play-services-base-18.1.0/res/values-zh-rCN/values.xml",

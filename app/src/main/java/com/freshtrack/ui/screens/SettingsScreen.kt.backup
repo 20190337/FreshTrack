@@ -1,0 +1,64 @@
+package com.freshtrack.ui.screens
+
+import android.content.Context
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+
+private const val PREFS_NAME = "FreshTrackPrefs"
+private const val KEY_NOTIFICATIONS = "notifications_enabled"
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsScreen(navController: NavController) {
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
+    
+    var notificationsEnabled by remember { mutableStateOf(prefs.getBoolean(KEY_NOTIFICATIONS, true)) }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Settings") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            ListItem(
+                headlineContent = { Text("Notifications") },
+                supportingContent = { Text(if (notificationsEnabled) "Enabled" else "Disabled") },
+                leadingContent = { Icon(Icons.Default.Notifications, null) },
+                trailingContent = {
+                    Switch(
+                        checked = notificationsEnabled,
+                        onCheckedChange = { enabled ->
+                            notificationsEnabled = enabled
+                            prefs.edit().putBoolean(KEY_NOTIFICATIONS, enabled).apply()
+                        }
+                    )
+                },
+                modifier = Modifier.clickable { 
+                    notificationsEnabled = !notificationsEnabled
+                    prefs.edit().putBoolean(KEY_NOTIFICATIONS, notificationsEnabled).apply()
+                }
+            )
+        }
+    }
+}

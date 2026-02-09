@@ -35,6 +35,7 @@ MERGED from [androidx.navigation:navigation-runtime:2.7.7] /home/codespace/.grad
 MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] /home/codespace/.gradle/caches/transforms-3/ab9d8c3d655190ba2f4b815815b0e0f1/transformed/navigation-common-ktx-2.7.7/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] /home/codespace/.gradle/caches/transforms-3/0782c425574ee3fa2fab333c5f979699/transformed/navigation-runtime-ktx-2.7.7/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.navigation:navigation-compose:2.7.7] /home/codespace/.gradle/caches/transforms-3/9eeb1f8a747c9af3d78ed7a78c0b7a1c/transformed/navigation-compose-2.7.7/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.hilt:hilt-work:1.1.0] /home/codespace/.gradle/caches/transforms-3/ab31f3f3655613276ba4f0019afddbb3/transformed/hilt-work-1.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.dagger:hilt-android:2.48] /home/codespace/.gradle/caches/transforms-3/67ff11b7e14398bade605316c04ecfc5/transformed/hilt-android-2.48/AndroidManifest.xml:16:1-19:12
 MERGED from [io.coil-kt:coil-compose:2.5.0] /home/codespace/.gradle/caches/transforms-3/aedd69d2d00e28b279f9988465979900/transformed/coil-compose-2.5.0/AndroidManifest.xml:2:1-7:12
 MERGED from [io.coil-kt:coil-compose-base:2.5.0] /home/codespace/.gradle/caches/transforms-3/0916994441a3455c172cb008a9f96882/transformed/coil-compose-base-2.5.0/AndroidManifest.xml:2:1-7:12
@@ -335,6 +336,8 @@ MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] /home/codespace/.
 MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] /home/codespace/.gradle/caches/transforms-3/0782c425574ee3fa2fab333c5f979699/transformed/navigation-runtime-ktx-2.7.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.navigation:navigation-compose:2.7.7] /home/codespace/.gradle/caches/transforms-3/9eeb1f8a747c9af3d78ed7a78c0b7a1c/transformed/navigation-compose-2.7.7/AndroidManifest.xml:5:5-44
 MERGED from [androidx.navigation:navigation-compose:2.7.7] /home/codespace/.gradle/caches/transforms-3/9eeb1f8a747c9af3d78ed7a78c0b7a1c/transformed/navigation-compose-2.7.7/AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-work:1.1.0] /home/codespace/.gradle/caches/transforms-3/ab31f3f3655613276ba4f0019afddbb3/transformed/hilt-work-1.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.hilt:hilt-work:1.1.0] /home/codespace/.gradle/caches/transforms-3/ab31f3f3655613276ba4f0019afddbb3/transformed/hilt-work-1.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.dagger:hilt-android:2.48] /home/codespace/.gradle/caches/transforms-3/67ff11b7e14398bade605316c04ecfc5/transformed/hilt-android-2.48/AndroidManifest.xml:18:3-42
 MERGED from [com.google.dagger:hilt-android:2.48] /home/codespace/.gradle/caches/transforms-3/67ff11b7e14398bade605316c04ecfc5/transformed/hilt-android-2.48/AndroidManifest.xml:18:3-42
 MERGED from [io.coil-kt:coil-compose:2.5.0] /home/codespace/.gradle/caches/transforms-3/aedd69d2d00e28b279f9988465979900/transformed/coil-compose-2.5.0/AndroidManifest.xml:5:5-44

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.freshtrack.app-mergeDebugResources-76:/values-lv/values-lv.xml",
+            "outputFile": "com.freshtrack.app-mergeDebugResources-77:/values-lv/values-lv.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/transforms-3/0f3a928c991c9f5a235e20810b3030f9/transformed/foundation-release/res/values-lv/values-lv.xml",

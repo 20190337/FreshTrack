@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.freshtrack.app-mergeDebugResources-76:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "com.freshtrack.app-mergeDebugResources-77:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/transforms-3/bacddd02f92657b5c19f426e98ce709b/transformed/appcompat-1.6.1/res/values-watch-v20/values-watch-v20.xml",

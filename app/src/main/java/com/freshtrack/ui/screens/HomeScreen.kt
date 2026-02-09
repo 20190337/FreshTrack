@@ -11,27 +11,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.freshtrack.data.local.entities.Product
 import com.freshtrack.ui.components.BottomNavBar
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.freshtrack.ui.viewmodel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
-    val auth = Firebase.auth
-    var products by remember { mutableStateOf<List<Product>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) }
-
-    // Simple mock data for demo - replace with actual repository call
-    LaunchedEffect(Unit) {
-        // In real app: products = repository.getExpiringProducts(7)
-        isLoading = false
-    }
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val expiringProducts by viewModel.expiringProducts.collectAsState(initial = emptyList())
+    val totalProducts by viewModel.allProductsCount.collectAsState(initial = 0)
 
     Scaffold(
         topBar = {
@@ -72,23 +68,19 @@ fun HomeScreen(navController: NavController) {
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
-                        text = "Welcome back!",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = auth.currentUser?.email ?: "",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Text("Expiring Soon", style = MaterialTheme.typography.titleMedium)
+                    Text("${expiringProducts.size} items need attention", style = MaterialTheme.typography.bodyMedium)
+                    Text("Total products: $totalProducts", style = MaterialTheme.typography.bodySmall)
                 }
             }
 
-            if (products.isEmpty()) {
+            if (expiringProducts.isEmpty()) {
                 EmptyState(
                     icon = Icons.Default.CheckCircle,
-                    message = "No items expiring soon!\nTap + to scan your first product."
+                    message = "No items expiring soon!\nAll your products are safe."
                 )
             } else {
                 LazyColumn(
@@ -96,10 +88,78 @@ fun HomeScreen(navController: NavController) {
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(products) { product ->
-                        Text(product.name) // Simplified for demo
+                    items(expiringProducts, key = { it.id }) { product ->
+                        ExpiringProductCard(
+                            product = product,
+                            onClick = { navController.navigate("product_detail/${product.id}") },
+                            onDelete = { viewModel.deleteProduct(product) }
+                        )
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ExpiringProductCard(
+    product: Product,
+    onClick: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    val currentTime = System.currentTimeMillis()
+    val daysUntilExpiry = TimeUnit.MILLISECONDS.toDays(product.expirationDate - currentTime)
+
+    val cardColor = when {
+        daysUntilExpiry <= 1 -> MaterialTheme.colorScheme.errorContainer
+        daysUntilExpiry <= 3 -> MaterialTheme.colorScheme.tertiaryContainer
+        else -> MaterialTheme.colorScheme.surface
+    }
+
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = cardColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    product.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                product.brand?.let {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Text(
+                    "Expires in $daysUntilExpiry days",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (daysUntilExpiry <= 1) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    dateFormat.format(Date(product.expirationDate)),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+            IconButton(onClick = onDelete) {
+                Icon(
+                    Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    tint = MaterialTheme.colorScheme.error
+                )
             }
         }
     }
